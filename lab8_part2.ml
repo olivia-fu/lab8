@@ -168,7 +168,5 @@ module IntStringSerialize =
       "(" ^ string_of_int n ^ ", '" ^ s ^ "')"
   end ;;
 
-module IntStringStack = 
+module IntStringStack : (STACK with type element = IntStringSerialize.t) = 
   MakeStack (IntStringSerialize) ;;
-
-
