@@ -108,7 +108,7 @@ module MakeStack (Element: SERIALIZE) : (STACK with type element = Element.t) =
     let pop_helper (s : stack) : (element * stack) =
       match s with
       | [] -> raise Empty
-      | hd :: tl -> (hd, tl)
+      | h :: t -> (h, t)
 
     let top (s : stack) : element =
       fst (pop_helper s)
@@ -126,9 +126,9 @@ module MakeStack (Element: SERIALIZE) : (STACK with type element = Element.t) =
       List.fold_left
 
     let serialize (s : stack) : string =
-      let string_join x y = Element.serialize y 
+      let string_join x y = Element.serialize y
                   ^ (if x <> "" then ":" ^ x else "") in
-        fold_left string_join "" s
+      fold_left string_join "" s
   end ;;
 
 (*......................................................................
@@ -137,13 +137,13 @@ that you just defined to an appropriate module for serializing integers.
 ......................................................................*)
 
 module IntSerialize : (SERIALIZE with type t = int) =
-  struct 
+  struct
     type t = int
     let serialize = string_of_int
   end ;;
 
 module IntStack : (STACK with type element = IntSerialize.t) =
-  MakeStack (IntSerialize) ;;
+  MakeStack(IntSerialize) ;;
 
 (*......................................................................
 Exercise 1C: Make a module `IntStringStack` that creates a stack whose
