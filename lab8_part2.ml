@@ -126,7 +126,8 @@ module MakeStack (Element: SERIALIZE) : (STACK with type element = Element.t) =
       List.fold_left
 
     let serialize (s : stack) : string =
-      let string_join x y = Element.serialize y in 
+      let string_join x y = Element.serialize y 
+                  ^ (if x <> "" then ":" ^ x else "") in
         fold_left string_join "" s
   end ;;
 
@@ -163,9 +164,11 @@ the string will be made up of alphanumeric characters only.
 module IntStringSerialize = 
   struct 
     type t = (int * string)
-    let serialize (n, s) = "(" ^ string_of_int n ^ ", '" ^ s ^ "')"
+    let serialize (n, s) = 
+      "(" ^ string_of_int n ^ ", '" ^ s ^ "')"
   end ;;
 
-module IntStringStack = MakeStack (IntStringSerialize) ;;
+module IntStringStack = 
+  MakeStack (IntStringSerialize) ;;
 
 
